@@ -1,0 +1,9 @@
+import('mvtnorm')
+
+importFrom("stats", "qt", "dchisq", "pnorm", "qchisq", "qnorm", "runif")
+importFrom("graphics", "axis", "plot", "points", "text")
+importFrom("stats", "var")
+importFrom("stats", "dnorm", "integrate", "rchisq", "uniroot")
+
+export('getCC')
+export('PH1XBAR')

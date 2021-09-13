@@ -1,0 +1,17 @@
+1e20f8e13c03d4f49f6768bf613b6295 *ChangeLog
+eae7aae791c8abe8efeb10147d4d39b5 *DESCRIPTION
+a33195b8b2951e28b744433211dd2ea1 *NAMESPACE
+91d2f960edb5a76920f4d7448c5a2693 *R/PH1XBAR.R
+a501462daeecef5a25bc2b2a6cf60d21 *R/data.R
+fa27f3d147201112882feead558ee5ac *R/getCC.BA.R
+509a35d53c1d030e09807267b37f902b *R/getCC.R
+496c80ee9497a25313ba81b41cd445fe *R/getCC.exact.R
+ada4be3cf72aaa8da9e7f7e6d561c963 *R/others.R
+6f6ae32f25ce9b7a53ec10ba638994b5 *README.md
+f602179b726b7d05a35504f9a1421e78 *data/bore_diameter_data.rda
+bd88fc92b02fe049afafd6a1eff9d97c *data/grinder_data.rda
+daff09c247ce761ab8a2477ebde6a49f *man/00_PH1XBAR-package.Rd
+8a61627daf33299ef7980509eb0e4031 *man/PH1XBAR.Rd
+5824ff0f75898857809b9b103cb84113 *man/bore_diameter_data.Rd
+3e534fdf01c9aaadde58619c18c32f22 *man/getCC.Rd
+eb6a80176d0faf69bf796f1b3cbf1db0 *man/grinder_data.Rd
