@@ -1,7 +1,21 @@
-\name{getCC}
+\name{getCC.XBAR}
+\alias{getCC.XBAR}
 \alias{getCC}
 \title{get Phase I corrected charting constant}
  \usage{
+getCC.XBAR(
+	FAP0
+	,m 
+	,var.est = c('S', 'MR') 
+	,ubCons = 1 
+	,method = c('exact', 'BA')
+	,interval = c(1, 5)
+	,nsim = 10000 
+	,nu = m - 1 
+	,lambda = 1
+  	,verbose = FALSE
+)
+
 getCC(
 	FAP0
 	,m 
@@ -12,6 +26,7 @@ getCC(
 	,nsim = 10000 
 	,nu = m - 1 
 	,lambda = 1
+  	,verbose = FALSE
 )
 }
 \arguments{
@@ -24,6 +39,7 @@ getCC(
   \item{nsim}{ number of simulation for the exact method }
   \item{nu}{ degrees of freedom for the Bonfferoni approximation}
   \item{lambda}{ constant for the Bonfferoni approximation }
+  \item{verbose}{ print diagnostic information about FAP0 and the charting constant during the simulations for the exact method }
 }
 \value{
 Object type double. The corrected charting constant. 
@@ -36,9 +52,9 @@ Obtain a corrected charting constant.
 set.seed(12345)
 
 # Calculate the charting constant using 10 simulations and mean-square-based estimator
-getCC(FAP0=0.05, m=20, nsim=10, var.est='S')
+getCC.XBAR(FAP0=0.05, m=20, nsim=10, var.est='S', verbose = TRUE)
 
 # Calculate the charting constant using 10 simulations and moving-range-based estimator
-getCC(FAP0=0.05, m=20, nsim=10, var.est='MR')
+getCC.XBAR(FAP0=0.05, m=20, nsim=10, var.est='MR', verbose = TRUE)
 
 }
