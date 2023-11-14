@@ -1,8 +1,8 @@
 [![R build
 status](https://github.com/bolus123/PH1XBAR/workflows/R-CMD-check/badge.svg)](https://github.com/bolus123/PH1XBAR/actions)
-[![](https://www.r-pkg.org/badges/version/PH1XBAR)](https://www.r-pkg.org:443/pkg/PH1XBAR)
+[![](https://www.r-pkg.org/badges/version/PH1XBAR)](https://www.r-pkg.org/pkg/PH1XBAR)
 [![CRAN RStudio mirror
-downloads](https://cranlogs.r-pkg.org/badges/PH1XBAR)](https://www.r-pkg.org:443/pkg/PH1XBAR)
+downloads](https://cranlogs.r-pkg.org/badges/PH1XBAR)](https://www.r-pkg.org/pkg/PH1XBAR)
 
 # Overview
 The purpose of PH1XBAR is to build three types of Phase I Shewhart control charts:  
@@ -80,14 +80,11 @@ PH1ARMA(preston_data)
 PH1ARMA(preston_data, case = 'K')
 ```
 
-Also, PH1XBAR provides a function to get the ARMA corrected charting constant as follows
+PH1XBAR provides a function to get the corrected charting constant for the ARMA model as follows
 
 ``` r
-# double simulation gets involved if estimators are unknown
-getCC.ARMA(FAP0 = 0.1, double.sim = TRUE)
-
-# single simulation gets involved if estimators are known
-getCC.ARMA(FAP0 = 0.1, double.sim = FALSE)
+# Calculate the charting constant using FAP0 of 0.05, and 50 observations
+getCC.ARMA(FAP0=0.05, n=50)
 ```
 
 More details are on the manual.
