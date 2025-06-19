@@ -1,12 +1,12 @@
 Package: PH1XBAR
 Type: Package
 Title: Phase I Shewhart X-Bar Chart
-Version: 0.11.2
+Version: 0.11.3
 Authors@R: c(
 				person("Yuhui", "Yao", role = c("aut", "cre"), email = "yyao17@ua.edu"),
-				person("Subha", "Chakraborti", role = c("ctb"), email = "schakrab@cba.ua.edu"),
+				person("Subha", "Chakraborti", role = c("ctb"), email = "schakrab@ua.edu"),
 				person("Tyler", "Thomas", role = c("ctb"), email = "tjthomas7@crimson.ua.edu"),
-				person("Jason", "Parton", role = c("ctb"), email = "jmparton@cba.ua.edu"),
+				person("Jason", "Parton", role = c("ctb"), email = "jmparton@ua.edu"),
 				person("Xin", "Yang", role = c("ctb"), email = "xyang15@cba.ua.edu")
 			)
 Maintainer: Yuhui Yao <yyao17@ua.edu>
@@ -15,15 +15,15 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
-Imports: forecast, mvtnorm, pracma
+Imports: forecast, mvtnorm, pracma, VGAM
 URL: https://github.com/bolus123/PH1XBAR
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-05-22 17:21:11 UTC; bolus
+Packaged: 2025-06-19 16:18:10 UTC; bolus
 Author: Yuhui Yao [aut, cre],
   Subha Chakraborti [ctb],
   Tyler Thomas [ctb],
   Jason Parton [ctb],
   Xin Yang [ctb]
 Repository: CRAN
-Date/Publication: 2024-05-22 21:20:22 UTC
+Date/Publication: 2025-06-19 16:30:02 UTC

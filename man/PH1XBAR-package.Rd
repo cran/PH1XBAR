@@ -3,7 +3,6 @@
 \docType{package}
 \name{PH1XBAR-package}
 \alias{PH1XBAR-package}
-\alias{_PACKAGE}
 \title{PH1XBAR: Phase I Shewhart X-Bar Chart}
 \description{
 The purpose of 'PH1XBAR' is to build a Phase I Shewhart control chart for the basic Shewhart, the variance components and the ARMA models in R for subgrouped and individual data. More details can be found: Yao and Chakraborti (2020) \doi{ 10.1002/qre.2793}, Yao and Chakraborti (2021) \doi{ 10.1080/08982112.2021.1878220}, and Yao et al. (2023) \doi{ 10.1080/00224065.2022.2139783}.
@@ -43,9 +42,9 @@ Useful links:
 
 Other contributors:
 \itemize{
-  \item Subha Chakraborti \email{schakrab@cba.ua.edu} [contributor]
+  \item Subha Chakraborti \email{schakrab@ua.edu} [contributor]
   \item Tyler Thomas \email{tjthomas7@crimson.ua.edu} [contributor]
-  \item Jason Parton \email{jmparton@cba.ua.edu} [contributor]
+  \item Jason Parton \email{jmparton@ua.edu} [contributor]
   \item Xin Yang \email{xyang15@cba.ua.edu} [contributor]
 }
 

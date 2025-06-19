@@ -30,8 +30,6 @@ pars.mat <- function(n, parsVec, norder = 1) {
   }
 }
 
-
-
 sigma.mat <- function(n, order = c(1, 0, 0), phi.vec = 0.5, theta.vec = NULL, sigma2 = 1, burn.in = 50) {
   if (order[1] == 0) {
     phiMat <- diag(n + burn.in)
@@ -46,6 +44,7 @@ sigma.mat <- function(n, order = c(1, 0, 0), phi.vec = 0.5, theta.vec = NULL, si
   }
 
   out <- solve(phiMat) %*% thetaMat %*% t(thetaMat) %*% t(solve(phiMat)) * sigma2
+  
 
   gamma0 <- out[dim(out)[1], dim(out)[2]]
 
@@ -53,7 +52,7 @@ sigma.mat <- function(n, order = c(1, 0, 0), phi.vec = 0.5, theta.vec = NULL, si
     out <- out[-c(1:burn.in), -c(1:burn.in)]
   }
 
-  list(sigma.mat = out, sqrtsigma.mat = sqrtm(out)$B, gamma0 = gamma0)
+  list(sigma.mat = out, sqrtsigma.mat = chol(out), gamma0 = gamma0)
 }
 
 ##############################################
@@ -124,7 +123,7 @@ sim.ARMA.process <- function(n, order = c(1, 0, 0), phi.vec = 0.5, theta.vec = N
   }
 }
 
-sim.coef.dist <- function(n, order = c(1, 0, 0), phi.vec = 0.5, theta.vec = NULL, method = "MLE+MOM",
+sim.coef.dist <- function(n, order = c(1, 0, 0), phi.vec = 0.5, theta.vec = NULL, method = "CSS",
                         nsim = 100, burn.in = 50, sim.type = "Matrix",
                         SigMat = sigma.mat(n, order, phi.vec, theta.vec, sigma2 = 1, burn.in = burn.in)) {
   outAR <- matrix(NA, nrow = nsim, ncol = order[1])
@@ -146,7 +145,7 @@ sim.coef.dist <- function(n, order = c(1, 0, 0), phi.vec = 0.5, theta.vec = NULL
       } else if (method == "CSS") {
         model <- try(arima(sim, order = order, method = "CSS"), silent = TRUE)
       }
-
+      
       check1 <- 1
       check2 <- 1
 
@@ -309,13 +308,11 @@ getCC.PH1ARMA.sim <- function(fap0 = 0.1, interval = c(1, 4), n = 50, order = c(
 #' 
 #' @param fap0 nominal false Alarm Probabilty in Phase 1 
 #' @param interval searching range of charting constants for the exact method 
-#' @param n number of observations 
-#' @param order order for ARMA model 
-#' @param phi.vec given vectors of autoregressive parameters for ARMA models 
-#' @param theta.vec given vectors of moving-average parameters for ARMA models 
-#' @param case known or unknown case.  When case = 'U', the parameters are unknown and the charting constant is calculated based on a bootstrapping method.  When case = 'K', the parameters are known and the charting constant is found using the quantile function of multivariate normal distribution
-#' @param phi vector of autoregressive coefficient(s).  When case = 'K', it must be provided. The length must be the same as the first value in the order.  It needs to be NULL if no autoregressor presents
-#' @param theta vector of moving-average coefficient(s).  When case = 'K', it must be provided. The length must be the same as the third value in the order.  It needs to be NULL if no moving average presents
+#' @param m number of observations 
+#' @param order order for ARMA(p, q) model 
+#' @param phi.vec a vector of length p containing autoregressive coefficient(s).  When case = 'K', the vector must have a length equal to the first value in the order.  If no autoregressive coefficent presents, set phi.vec = NULL
+#' @param theta.vec a vector of length q containing moving-average coefficient(s).  When case = 'K', the vector must have a length equal to the first value in the order.  If no moving-average coefficent presents, set theta.vec = NULL
+#' @param case known or unknown case.  When case = 'U', the parameters are estimated, when case = 'K', the parameters need to be input
 #' @param method estimation method for the control chart. When method = 'Method 3' is maximum likehood estimations plus method of moments. Other options are 'Method 1' which is pure MLE and 'Method 2' which is pure CSS. 
 #' @param nsim.coefs number of simulation for coeficients.  It is functional when double.sim = TRUE. 
 #' @param nsim.process number of simulation for ARMA processes 
@@ -332,12 +329,12 @@ getCC.PH1ARMA.sim <- function(fap0 = 0.1, interval = c(1, 4), n = 50, order = c(
 #' set.seed(12345)
 #' 
 #' # Calculate the charting constant using fap0 of 0.05, and 50 observations
-#' getCC.ARMA(fap0=0.05, n=50, nsim.coefs=10, nsim.process=10)
+#' getCC.ARMA(fap0=0.05, m=50, nsim.coefs=10, nsim.process=10)
 #' 
 getCC.ARMA <- function(fap0 = 0.05,
                        interval = c(1, 4),
-                       n = 50,
-                       order = c(1, 0, 0),
+                       m = 50,
+                       order = c(1, 0),
                        phi.vec = 0.5,
                        theta.vec = NULL,
                        case = "U",
@@ -345,22 +342,25 @@ getCC.ARMA <- function(fap0 = 0.05,
                        nsim.coefs = 100,
                        nsim.process = 1000,
                        burn.in = 50,
-                       sim.type = "Matrix",
+                       sim.type = "Recursive",
                        verbose = FALSE) {
+  
+  neworder <- c(order[1], 0, order[2])
+  
   if (case == "K") {
     if (sim.type == "Matrix") {
-      sigMat <- sigma.mat(n, order = order, phi.vec = phi.vec, theta.vec = theta.vec, sigma2 = 1, burn.in = burn.in)
+      sigMat <- sigma.mat(m, order = neworder, phi.vec = phi.vec, theta.vec = theta.vec, sigma2 = 1, burn.in = burn.in)
       out <- qmvnorm(1 - fap0, tail = "both.tails", sigma = sigMat$sigma.mat / sigMat$gamma0)$quantile
     } else {
-      out <- getCC.PH1ARMA.sim(fap0, interval, n, order,
+      out <- getCC.PH1ARMA.sim(fap0, interval, m, neworder,
         phi.vec = phi.vec, theta.vec = theta.vec, case = case, method = method,
         nsim = nsim.process, burn.in = burn.in, sim.type = sim.type, verbose = verbose
       )
     }
   } else if (case == "U") {
-    CoefDist <- sim.coef.dist(n, order, phi.vec, theta.vec, method, nsim = nsim.coefs, burn.in = burn.in, sim.type = sim.type)
+    CoefDist <- sim.coef.dist(m, neworder, phi.vec, theta.vec, method, nsim = nsim.coefs, burn.in = burn.in, sim.type = sim.type)
 
-    out <- getCC.PH1ARMA.sim(fap0, interval, n, order,
+    out <- getCC.PH1ARMA.sim(fap0, interval, m, neworder,
       phi.vec = CoefDist$phi.vec, theta.vec = CoefDist$theta.vec, case = case, method = method,
       nsim = nsim.process, burn.in = burn.in, sim.type = sim.type, verbose = verbose
     )
